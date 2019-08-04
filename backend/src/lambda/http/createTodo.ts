@@ -1,4 +1,4 @@
-import 'source-map-support/register'
+/* import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
 
@@ -10,3 +10,4 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   // TODO: Implement creating a new TODO item
   return undefined
 }
+ */

@@ -14,6 +14,7 @@ provider:
 
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
+    AUTH_0_SECRET: dvoS1R04TxqHt4fAoELnJh-m5aroJ5kUfDsg4rh9qqQavSx3CplpKp5ZJ4L0FUq8
 
   iamRoleStatements:
     - Effect: Allow
@@ -39,7 +40,6 @@ functions:
           cors: true
 
   # TODO: Configure this function
-  GetTodos:
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
     events:
