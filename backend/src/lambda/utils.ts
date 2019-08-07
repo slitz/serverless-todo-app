@@ -14,3 +14,24 @@ export function getUserId(event: APIGatewayProxyEvent): string {
 
   return parseUserId(jwtToken)
 }
+
+/**
+ * Check if a todoId is exists in the database
+ * @param todoId an id of a todo item
+ * @param docClient an instance of the AWS DynamoDB DocumentClient
+ * @param todosTable the name of the todos table
+ *
+ * @returns boolean
+ */
+export async function todoExists(todoId: string, docClient: AWS.DynamoDB.DocumentClient, todosTable: string) {
+  const result = await docClient
+    .get({
+      TableName: todosTable,
+      Key: {
+        id: todoId
+      }
+    })
+    .promise()
+
+  return !!result.Item
+}

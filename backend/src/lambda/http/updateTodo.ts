@@ -2,13 +2,14 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
 import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
 import * as AWS  from 'aws-sdk'
+import { todoExists } from '../utils';
 
 const docClient = new AWS.DynamoDB.DocumentClient()
 const todosTable = process.env.TODOS_TABLE
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const todoId = event.pathParameters.todoId
-  const validTodoId = await todoExists(todoId)
+  const validTodoId = await todoExists(todoId, docClient, todosTable)
 
   if (!validTodoId) {
     return {
@@ -56,18 +57,4 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     },
     body: null
   }
-}
-
-async function todoExists(todoId: string) {
-  const result = await docClient
-    .get({
-      TableName: todosTable,
-      Key: {
-        id: todoId
-      }
-    })
-    .promise()
-
-  console.log('Get group: ', result)
-  return !!result.Item
 }
