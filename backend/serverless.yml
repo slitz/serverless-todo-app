@@ -111,9 +111,6 @@ resources:
         Type: AWS::S3::Bucket
         Properties:
           BucketName: ${self:provider.environment.ATTACHMENTS_S3_BUCKET}
-          NotificationConfiguration:
-            TopicConfigurations:
-              - Event: s3:ObjectCreated:Put
           CorsConfiguration:
             CorsRules:
               -
