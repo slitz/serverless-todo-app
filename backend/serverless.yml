@@ -109,7 +109,6 @@ resources:
       
     AttachmentsBucket:
         Type: AWS::S3::Bucket
-        DependsOn: SNSTopicPolicy
         Properties:
           BucketName: ${self:provider.environment.ATTACHMENTS_S3_BUCKET}
           NotificationConfiguration:
