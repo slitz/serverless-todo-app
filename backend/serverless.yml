@@ -14,6 +14,8 @@ provider:
 
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
+    ATTACHMENTS_S3_BUCKET: serverless-todo-app-attachments-${self:provider.stage}
+    SIGNED_URL_EXPIRATION: 300
     AUTH_0_SECRET: dvoS1R04TxqHt4fAoELnJh-m5aroJ5kUfDsg4rh9qqQavSx3CplpKp5ZJ4L0FUq8
 
   iamRoleStatements:
@@ -25,6 +27,11 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}   
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_S3_BUCKET}/*
 
 functions:
 
@@ -99,3 +106,40 @@ resources:
           Ref: ApiGatewayRestApi
         ValidateRequestBody: true
         ValidateRequestParameters: false
+      
+    AttachmentsBucket:
+        Type: AWS::S3::Bucket
+        DependsOn: SNSTopicPolicy
+        Properties:
+          BucketName: ${self:provider.environment.ATTACHMENTS_S3_BUCKET}
+          NotificationConfiguration:
+            TopicConfigurations:
+              - Event: s3:ObjectCreated:Put
+          CorsConfiguration:
+            CorsRules:
+              -
+                AllowedOrigins:
+                  - '*'
+                AllowedHeaders:
+                  - '*'
+                AllowedMethods:
+                  - GET
+                  - PUT
+                  - POST
+                  - DELETE
+                  - HEAD
+                MaxAge: 3000
+
+      BucketPolicy:
+        Type: AWS::S3::BucketPolicy
+        Properties:
+          PolicyDocument:
+            Id: MyPolicy
+            Version: "2012-10-17"
+            Statement:
+              - Sid: PublicReadForGetBucketObjects
+                Effect: Allow
+                Principal: '*'
+                Action: 's3:GetObject'
+                Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENTS_S3_BUCKET}/*'
+          Bucket: !Ref AttachmentsBucket
