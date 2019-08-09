@@ -103,9 +103,15 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+            - AttributeName: sortKey
+              AttributeType: S
+            - AttributeName: indexKey
+              AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+          - AttributeName: sortKey
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TODOS_TABLE}
         LocalSecondaryIndexes:
