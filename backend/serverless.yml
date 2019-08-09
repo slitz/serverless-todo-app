@@ -13,7 +13,7 @@ provider:
   region: ${opt:region, 'us-east-1'}
 
   environment:
-    TODOS_TABLE: Todos-${self:provider.stage}
+    TODOS_TABLE: TodosTable-${self:provider.stage}
     INDEX_NAME: UserId-${self:provider.stage}
     ATTACHMENTS_S3_BUCKET: serverless-todo-app-attachments-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
@@ -25,10 +25,13 @@ provider:
         - dynamodb:Scan
         - dynamodb:PutItem
         - dynamodb:GetItem
-        - dynamodb:Query
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}   
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
     - Effect: Allow
       Action:
         - s3:PutObject
