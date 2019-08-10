@@ -6,19 +6,18 @@ import { getUserId } from '../utils';
 const docClient = new AWS.DynamoDB.DocumentClient()
 
 const todosTable = process.env.TODOS_TABLE
-const userIdIndex = process.env.INDEX_NAME
+// const userIdIndex = process.env.INDEX_NAME
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // TODO: Get all TODO items for a current user
   console.log('Processing event: ', event)
   const userId = getUserId(event)
 
-  const result = await docClient.query({
+  const result = await docClient.scan({
     TableName: todosTable,
-    IndexName: userIdIndex,
-    KeyConditionExpression: 'userId = :userId',
+    FilterExpression: 'userId = :userId',
     ExpressionAttributeValues: {
-      ':userId': userId
+      ':userId': userId 
     }
   }).promise()
 
