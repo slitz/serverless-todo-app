@@ -13,8 +13,7 @@ provider:
   region: ${opt:region, 'us-east-1'}
 
   environment:
-    TODOS_TABLE: TodosTable-${self:provider.stage}
-    INDEX_NAME: UserId-${self:provider.stage}
+    TODOS: TodosTable-${self:provider.stage}
     ATTACHMENTS_S3_BUCKET: serverless-todo-app-attachments-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     AUTH_0_SECRET: dvoS1R04TxqHt4fAoELnJh-m5aroJ5kUfDsg4rh9qqQavSx3CplpKp5ZJ4L0FUq8
@@ -27,11 +26,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}   
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS}   
     - Effect: Allow
       Action:
         - s3:PutObject
@@ -110,7 +105,7 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.TODOS_TABLE}
+        TableName: ${self:provider.environment.TODOS}
 
     RequestBodyValidator:
       Type: AWS::ApiGateway::RequestValidator
