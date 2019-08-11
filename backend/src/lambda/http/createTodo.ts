@@ -19,7 +19,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const jwtToken = split[1]
 
   const newItem = {
-    id: itemId,
+    todoId: itemId,
     userId: parseUserId(jwtToken),
     ...newTodo
   }
