@@ -16,7 +16,7 @@ provider:
     TODOS_TABLE: TodosTable-${self:provider.stage}
     ATTACHMENTS_S3_BUCKET: serverless-todo-app-attachments-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
-    AUTH_0_SECRET: dvoS1R04TxqHt4fAoELnJh-m5aroJ5kUfDsg4rh9qqQavSx3CplpKp5ZJ4L0FUq8
+    AUTH_0_SECRET: gcWWkD8XpUGdxBL-J29A4Vv5IAmKKqkbSpVKRP1FXOuGieQemj3GVkX0Q8LCoD4d
 
   iamRoleStatements:
     - Effect: Allow
