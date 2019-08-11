@@ -13,7 +13,7 @@ provider:
   region: ${opt:region, 'us-east-1'}
 
   environment:
-    TODOS_TABLE: Todos-${self:provider.stage}
+    TODOS_TABLE: TodosTable-${self:provider.stage}
     ATTACHMENTS_S3_BUCKET: serverless-todo-app-attachments-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     AUTH_0_SECRET: dvoS1R04TxqHt4fAoELnJh-m5aroJ5kUfDsg4rh9qqQavSx3CplpKp5ZJ4L0FUq8
